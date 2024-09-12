@@ -1,5 +1,11 @@
 <?php
 
+    // import de la classe RecetteController
+    require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'RecetteController.php');
+    
+    // import de la classe RecetteController
+    require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'ContactController.php');
+    
     // connexion à la base de données
     require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Models'.DIRECTORY_SEPARATOR.'connectDb.php');
     
@@ -15,16 +21,24 @@
             require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'homeController.php');
             break;
         case 'contact':
-            require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'contactController.php');
+            $contactController = new ContactController();
+            $contactController->ajouter();
             break;
         case 'ajout':
-            require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'ajoutController.php');
+            $recetteController = new RecetteController();
+            $recetteController->ajouter();
             break;
         case 'enregistrer':
-            require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'enregistrerController.php');
+            $recetteController = new RecetteController();
+            $recetteController->enregistrer($pdo);
             break;
         case 'contacter':
-            require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'contacterController.php');
+            $contactController = new ContactController();
+            $contactController->enregister($pdo);
+            break;
+        case 'liste':
+            $recetteController = new RecetteController();
+            $recetteController->lister($pdo);
             break;
         default:
             echo "Page non trouvée";
