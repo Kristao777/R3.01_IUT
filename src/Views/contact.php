@@ -1,9 +1,5 @@
-<body>
+<h1>Formulaire de contact</h1>
 
-    <h1>Formulaire de contact</h1>
-
-    <p>
-        Merci de remplir ce formulaire pour nous contacter.
-    </p>
-
-</body>
+<p>
+    Merci de remplir ce formulaire pour nous contacter.
+</p>
