@@ -40,6 +40,10 @@
             $recetteController = new RecetteController();
             $recetteController->lister($pdo);
             break;
+        case 'detail':
+            $recetteController = new RecetteController();
+            $recetteController->detail($pdo,$_GET['id']);
+            break;
         default:
             echo "Page non trouvée";
     }
