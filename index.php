@@ -28,6 +28,10 @@
             $recetteController = new RecetteController();
             $recetteController->ajouter();
             break;
+        case 'modif':
+            $recetteController = new RecetteController();
+            $recetteController->modifier($pdo);
+            break;
         case 'enregistrer':
             $recetteController = new RecetteController();
             $recetteController->enregistrer($pdo);
