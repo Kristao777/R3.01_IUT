@@ -1,10 +1,15 @@
 <?php
 
+    session_start();
+
     // import de la classe RecetteController
     require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'RecetteController.php');
     
-    // import de la classe RecetteController
+    // import de la classe ContactController
     require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'ContactController.php');
+    
+    // import de la classe UserController
+    require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'UserController.php');
     
     // connexion à la base de données
     require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Models'.DIRECTORY_SEPARATOR.'connectDb.php');
@@ -47,6 +52,30 @@
         case 'detail':
             $recetteController = new RecetteController();
             $recetteController->detail($pdo,$_GET['id']);
+            break;
+        case 'inscription':
+            $userController = new UserController();
+            $userController->inscription();
+            break;
+        case 'inscrire':
+            $userController = new UserController();
+            $userController->enregistrer($pdo);
+            break;
+        case 'connexion':
+            $userController = new UserController();
+            $userController->connexion();
+            break;
+        case 'connecter':
+            $userController = new UserController();
+            $userController->verifieConnexion($pdo);
+            break;
+        case 'profil':
+            $userController = new UserController();
+            $userController->profil($pdo);
+            break;
+        case 'deconnexion':
+            $userController = new UserController();
+            $userController->deconnexion();
             break;
         default:
             echo "Page non trouvée";

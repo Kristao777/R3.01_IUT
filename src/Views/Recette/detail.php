@@ -5,5 +5,7 @@
     Auteur : <a href="mailto:<?php echo $recipe['auteur']; ?>"><?php echo $recipe['auteur']; ?></a></div>
 </div>
 <p></p>
-<a href="?c=modif&id=<?php echo $recipe['id'];?>" class="btn btn-primary">Modifier la recette</a>
+<?php if(isset($_SESSION['identifiant'])) {?>
+    <a href="?c=modif&id=<?php echo $recipe['id'];?>" class="btn btn-primary">Modifier la recette</a>
+<?php } ?>
 <a href="?c=liste" class="btn btn-primary">Retour à la liste des recettes</a>
