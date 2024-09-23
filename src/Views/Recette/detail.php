@@ -13,4 +13,19 @@
         <a href="?c=favori&id=<?php echo $recipe['id'];?>" class="btn btn-primary">Retirer des favoris</a>
     <?php }?>
 <?php } ?>
+<a href="#" id="ajoutcomment" data-id="<?php echo $recipe['id'];?>" class="btn btn-primary">Ajouter un commentaire</a>
 <a href="?c=liste" class="btn btn-primary">Retour à la liste des recettes</a>
+
+<h2>Commentaires</h2>
+<div id="divCommentaire">
+    <?php if(!$commentaires) { ?>
+        <p>Aucun commentaire sur cette recette</p>
+    <?php } else { ?>
+        <?php foreach($commentaires as $commentaire) : ?>
+            <div class="border border-3 border-black rounded rounded-4 p-1">
+                <p><?php echo $commentaire['commentaire']; ?></p>
+                <p class="text-end"><b>Par <?php echo $commentaire['pseudo']." le ".$commentaire['create_time']; ?></b></p>
+            </div>
+        <?php endforeach; ?>
+    <?php } ?>
+</div>

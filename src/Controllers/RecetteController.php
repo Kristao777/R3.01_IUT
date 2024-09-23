@@ -89,7 +89,7 @@ class RecetteController {
 
         // Ajout du contrôleur des favoris
         $favoriController = new FavoriController();
-        $existe = $favoriController->existe($pdo, $id, $_SESSION['id']);
+        $existe = $favoriController->existe($pdo, $id, isset($_SESSION['id']) ? $_SESSION['id']:null);
         
         // préparation de la requête de sélection dans la base de données
 
@@ -100,6 +100,10 @@ class RecetteController {
         // exécution de la requête et récupération des données
         $requete->execute();
         $recipe = $requete->fetch(PDO::FETCH_ASSOC);
+
+        // Ajout des commentaires
+        $commentaireController = new CommentController();
+        $commentaires = $commentaireController->lister($pdo, $id);
 
         require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Recette' . DIRECTORY_SEPARATOR .'detail.php');
     }

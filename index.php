@@ -14,6 +14,9 @@
     // import de la classe FavoriController
     require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'FavoriController.php');
     
+    // import de la classe CommentController
+    require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'CommentController.php');
+    
     // connexion à la base de données
     require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Models'.DIRECTORY_SEPARATOR.'connectDb.php');
     
@@ -91,6 +94,10 @@
         case 'getFavoris':
             $favoriController = new FavoriController();
             $favoriController->getFavoris($pdo, $_GET['id']);
+            break;
+        case 'ajoutComment':
+            $commentaireController = new CommentController();
+            $commentaireController->ajouter($pdo, $_GET['id']);
             break;
         default:
             echo "Page non trouvée";

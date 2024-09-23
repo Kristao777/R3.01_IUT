@@ -50,4 +50,48 @@ document.addEventListener('DOMContentLoaded', () => {
     
     });
 
+    // Sélectionne toutes les recettes avec la classe 'recipefav'
+    let btAjoutCommentaire = document.getElementById('ajoutcomment');
+    
+    // Ajoute un écouteur d'événements sur le bouton
+    btAjoutCommentaire?.addEventListener('click', (event) => {
+        event.preventDefault(); // Empêche le comportement par défaut
+
+        let divCommentaire = document.getElementById('divCommentaire');
+        
+        // Crée un élément <form>
+        let formComment = document.createElement('form');
+        formComment.method = 'post';
+        formComment.action = '?c=ajoutComment&id=' + btAjoutCommentaire.dataset.id;  // Action du formulaire
+
+        // Créer un textarea
+        let textarea = document.createElement('textarea');
+        textarea.name = 'commentaire';
+        textarea.placeholder = 'Saisir le commentaire';
+        textarea.rows = '4';
+        textarea.classList.add('form-control');
+        textarea.required = true;  // Ajoute un attribut required pour vérifier la saisie
+
+        // Crée un bouton submit
+        let submitButton = document.createElement('button');
+        submitButton.type = 'submit';  // Type de bouton
+        submitButton.textContent = 'Valider le commentaire';  // Texte du bouton
+        submitButton.classList.add('btn', 'btn-primary');  // Ajoute une classe au bouton
+
+        // Ajoute un div de class mb-3
+        let divMessage = document.createElement('div');
+        divMessage.classList.add('mb-3');
+
+        divMessage.appendChild(textarea);
+        divMessage.appendChild(submitButton);
+
+        // Ajoute les éléments dans le formulaire
+        formComment.appendChild(divMessage);
+
+        divCommentaire.prepend(formComment); // Ajoute le formulaire au div commentairev
+
+        btAjoutCommentaire.classList.add('d-none'); // Affiche le div commentaire
+
+    });
+
 });
