@@ -7,5 +7,10 @@
 <p></p>
 <?php if(isset($_SESSION['identifiant'])) {?>
     <a href="?c=modif&id=<?php echo $recipe['id'];?>" class="btn btn-primary">Modifier la recette</a>
+    <?php if(!$existe) {?>
+        <a href="?c=favori&id=<?php echo $recipe['id'];?>" class="btn btn-primary">Ajouter aux favoris</a>
+    <?php } else {?>
+        <a href="?c=favori&id=<?php echo $recipe['id'];?>" class="btn btn-primary">Retirer des favoris</a>
+    <?php }?>
 <?php } ?>
 <a href="?c=liste" class="btn btn-primary">Retour à la liste des recettes</a>

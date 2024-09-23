@@ -58,6 +58,7 @@ class UserController {
             $_SESSION['id'] = $user['id'];
             $_SESSION['identifiant'] = $user['identifiant'];
             $_SESSION['mail'] = $user['mail'];
+            $_SESSION['message'] = ['success' => 'Connexion réussie.'];
             
             // redirection vers la page d'accueil
             header('Location: ?c=home');

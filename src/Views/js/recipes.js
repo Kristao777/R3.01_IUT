@@ -1,6 +1,30 @@
 // Écoute le chargement du DOM
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Sélectionne toutes les recettes avec la classe 'recipefav'
+    let recipefav = document.querySelectorAll('.recipefav');
+
+    // Ajoute un écouteur d'événements sur chaque recette
+    recipefav.forEach(recipe => {
+        
+        recipe.addEventListener('mouseover', (event) => {
+            recipe.style.cursor = 'pointer'; // Change le curseur de la souris en pointeur lorsque la souris passe dessus la recette
+        });
+        
+        recipe.addEventListener('mouseout', (event) => {
+            recipe.style.cursor = ''; // Retire le curseur de la souris en pointeur lorsque la souris sort de la recette
+        });
+        
+        recipe.addEventListener('click', (event) => {
+            event.preventDefault(); // Empêche le comportement par défaut
+            fetch('?c=favori&id='+recipe.dataset.id)
+            .then(function() {
+                location.reload();
+            });
+        });
+    
+    });
+
     // Sélectionne toutes les recettes avec la classe 'recipe'
     let recipes = document.querySelectorAll('.recipe');
 

@@ -86,7 +86,12 @@ class RecetteController {
     }
 
     function detail($pdo, $id) {
-        // préparation de la requête d'insertion dans la base de données
+
+        // Ajout du contrôleur des favoris
+        $favoriController = new FavoriController();
+        $existe = $favoriController->existe($pdo, $id, $_SESSION['id']);
+        
+        // préparation de la requête de sélection dans la base de données
 
         /** @var PDO $pdo **/
         $requete = $pdo->prepare("SELECT * FROM recettes WHERE id = :id");

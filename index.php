@@ -11,11 +11,14 @@
     // import de la classe UserController
     require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'UserController.php');
     
+    // import de la classe FavoriController
+    require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'FavoriController.php');
+    
     // connexion à la base de données
     require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Models'.DIRECTORY_SEPARATOR.'connectDb.php');
     
     // ajout de l'en tête
-    require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR.'header.php');
+    if(!isset($_GET["x"])) require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR.'header.php');
 
     // mise en place de la route actuelle
     $route = isset($_GET['c'])? $_GET['c'] : 'home';
@@ -77,9 +80,21 @@
             $userController = new UserController();
             $userController->deconnexion();
             break;
+        case 'favori':
+            $favoriController = new FavoriController();
+            $favoriController->ajouter($pdo, $_GET['id']);
+            break;
+        case 'mesFavoris':
+            $favoriController = new FavoriController();
+            $favoriController->mesRecettesFavoris();
+            break;
+        case 'getFavoris':
+            $favoriController = new FavoriController();
+            $favoriController->getFavoris($pdo, $_GET['id']);
+            break;
         default:
             echo "Page non trouvée";
     }
     
     // ajout du pied de page
-    require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR.'footer.php');
+    if(!isset($_GET["x"])) require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR.'footer.php');
