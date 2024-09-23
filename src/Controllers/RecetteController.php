@@ -89,7 +89,7 @@ class RecetteController {
 
         // Ajout du contrôleur des favoris
         $favoriController = new FavoriController();
-        $existe = $favoriController->existe($pdo, $id, $_SESSION['id']);
+        $existe = $favoriController->existe($pdo, $id, isset($_SESSION['id']) ? $_SESSION['id']:null);
         
         // préparation de la requête de sélection dans la base de données
 
