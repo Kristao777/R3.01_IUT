@@ -13,6 +13,9 @@
                 <?php } else { ?>
                     <span class="recipefav"  data-id="<?php echo $recipe['id']; ?>" title="Retirer des favoris"><i class="bi bi-heart-fill"></i></span>
                 <?php } ?>
+                <?php if($_SESSION['isAdmin']) : ?>
+                    <a href="?c=supprimerRecette&id=<?php echo $recipe['id']; ?>"><i class="bi bi-trash"></i></a>
+                <?php endif;?>
             <?php } ?>
             <!-- Utilisation des Cards Bootstrap -->
             <div class="recipe card" data-id="<?php echo $recipe['id']; ?>">

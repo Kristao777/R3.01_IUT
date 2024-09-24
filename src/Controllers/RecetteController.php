@@ -108,4 +108,38 @@ class RecetteController {
         require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Recette' . DIRECTORY_SEPARATOR .'detail.php');
     }
 
+    // Fonction permettant de supprimer une recette
+    function supprimer($pdo, $id) {
+
+        // Suppression des favoris liés à la recette
+        $requete = $pdo->prepare("DELETE FROM favoris WHERE recette_id = :id");
+        $requete->bindParam(':id', $id);
+        
+        // exécution de la requête
+        $suppressionOk = $requete->execute();
+
+        // Suppression des commentaires liés à la recette
+        $requete = $pdo->prepare("DELETE FROM comments WHERE recette_id = :id");
+        $requete->bindParam(':id', $id);
+        
+        // exécution de la requête
+        $suppressionOk = $requete->execute();
+
+        // préparation de la requête de suppression dans la base de données
+        $requete = $pdo->prepare("DELETE FROM recettes WHERE id = :id");
+        $requete->bindParam(':id', $id);
+        
+        // exécution de la requête
+        $suppressionOk = $requete->execute();
+        
+        if($suppressionOk) {
+            $_SESSION['message'] = ['success' => 'Recette supprimée avec succès'];
+
+            // redirection vers la vue de suppression effectuée
+            require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Recette' . DIRECTORY_SEPARATOR.'liste.php');
+        } else {
+            $_SESSION['message'] = ['danger' => 'Erreur dans la suppression de la recette'];;
+        }
+    }
+
 }

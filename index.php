@@ -59,6 +59,10 @@
             $recetteController = new RecetteController();
             $recetteController->detail($pdo,$_GET['id']);
             break;
+        case 'supprimerRecette':
+            $recetteController = new RecetteController();
+            $recetteController->supprimer($pdo,$_GET['id']);
+            break;
         case 'inscription':
             $userController = new UserController();
             $userController->inscription();
@@ -98,6 +102,14 @@
         case 'ajoutComment':
             $commentaireController = new CommentController();
             $commentaireController->ajouter($pdo, $_GET['id']);
+            break;
+        case 'listeComments':
+            $commentaireController = new CommentController();
+            $commentaireController->getAll($pdo);
+            break;
+        case 'supprimerComment':
+            $commentaireController = new CommentController();
+            $commentaireController->supprimer($pdo, $_GET['id']);
             break;
         default:
             echo "Page non trouvée";

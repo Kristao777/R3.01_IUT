@@ -35,6 +35,9 @@
                         <li><a class="nav-link" href='?c=profil'>Mon profil</a></li>
                         <li><a class="nav-link" href='?c=ajout'>Ajouter une recette</a></li>
                         <li><a class="nav-link" href='?c=mesFavoris'>Mes recettes favorites</a></li>
+                        <?php if($_SESSION['isAdmin']) {?>
+                            <li><a class="nav-link" href='?c=listeComments'>Liste des commentaires</a></li>
+                        <?php } ?>
                     </ul>
                 </li>
             <?php } ?>
