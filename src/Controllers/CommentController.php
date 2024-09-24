@@ -2,7 +2,16 @@
 
 class CommentController {
 
-    function ajouter($pdo, $id_recette) {
+    // fonction permettant de lister tous les commentaires
+    function index($pdo) {
+        $requete = $pdo->query("SELECT * FROM comments ORDER BY create_time DESC");
+        $commentaires = $requete->fetchAll(PDO::FETCH_ASSOC);
+
+        // affichage des commentaires
+        require_once __DIR__. DIRECTORY_SEPARATOR. '..'. DIRECTORY_SEPARATOR. 'Views'. DIRECTORY_SEPARATOR. 'Comment' . DIRECTORY_SEPARATOR. 'liste.php';
+    }
+
+    function enregistrer($pdo, $id_recette) {
 
         // utilisateur anonyme si aucun utilisateur connecté
         if(isset($_SESSION['id'])) {
@@ -20,24 +29,15 @@ class CommentController {
         $requete->bindParam(':commentaire', $commentaire);
         $requete->execute();
         // redirection vers la page de détail de la recette après l'ajout du commentaire
-        header('Location: ?c=detail&id='.$id_recette);
+        header('Location: ?c=Recette&a=detail&id='.$id_recette);
     }
 
     // fonction permettant de lister les commmentaires d'une recette
-    function lister($pdo,$id) {
+    function listerParRecette($pdo,$id) {
         $requete = $pdo->prepare("SELECT * FROM comments WHERE recette_id = :recette_id");
         $requete->bindParam(':recette_id',$id);
         $requete->execute();
         return $requete->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    // fonction permettant de lister tous les commentaires
-    function getAll($pdo) {
-        $requete = $pdo->query("SELECT * FROM comments ORDER BY create_time DESC");
-        $commentaires = $requete->fetchAll(PDO::FETCH_ASSOC);
-
-        // affichage des commentaires
-        require_once __DIR__. DIRECTORY_SEPARATOR. '..'. DIRECTORY_SEPARATOR. 'Views'. DIRECTORY_SEPARATOR. 'Comment' . DIRECTORY_SEPARATOR. 'liste.php';
     }
 
     // fonction permettant de supprimer un commentaire
@@ -47,7 +47,7 @@ class CommentController {
         $requete->execute();
         $_SESSION['message'] = ['success' => 'Commentaire supprimé avec succès'];
         // redirection vers la page de détail de la recette après la suppression du commentaire
-        header('Location: ?c=listeComments');
+        header('Location: ?c=Comment&a=index');
     }
 
 }

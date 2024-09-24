@@ -1,6 +1,10 @@
 <?php
 
 class FavoriController {
+    
+    function index() {
+        require_once __DIR__. DIRECTORY_SEPARATOR. '..'. DIRECTORY_SEPARATOR. 'Views'. DIRECTORY_SEPARATOR. 'User'. DIRECTORY_SEPARATOR.'favoris.php';
+    }
 
     function ajouter($pdo, $id_recette) {
         // récupération de l'id de l'utilisateur connecté
@@ -30,7 +34,7 @@ class FavoriController {
         }
 
         // redirection vers la page de la recette pour afficher un message de confirmation
-        header('Location: ?c=detail&id='. $id_recette);
+        header('Location: ?c=Recette&a=detail&id='. $id_recette);
 
     }
 
@@ -46,12 +50,8 @@ class FavoriController {
         return $requete->fetch();
     }
 
-    function mesRecettesFavoris() {
-        require_once __DIR__. DIRECTORY_SEPARATOR. '..'. DIRECTORY_SEPARATOR. 'Views'. DIRECTORY_SEPARATOR. 'User'. DIRECTORY_SEPARATOR.'favoris.php';
-    }
-
     // Fonction permettant de récupérer les recettes favorites d'un utilisateur
-    function getFavoris($pdo, $id_utilisateur) {
+    function listerParUtilisateur($pdo, $id_utilisateur) {
         $requete = $pdo->prepare("SELECT r.* FROM favoris f JOIN recettes r ON f.recette_id = r.id WHERE f.user_id = :user_id");
         $requete->bindParam(':user_id', $id_utilisateur);
         $requete->execute();

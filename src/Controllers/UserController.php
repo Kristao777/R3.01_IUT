@@ -2,8 +2,13 @@
 
 class UserController {
 
+    // Fonction permettant de se connecter à l'application
+    function index() {
+        require_once __DIR__. DIRECTORY_SEPARATOR. '..'. DIRECTORY_SEPARATOR. 'Views'. DIRECTORY_SEPARATOR. 'User' . DIRECTORY_SEPARATOR. 'connexion.php';
+    }
+
     // Fonction permettant d'ajouter un nouvel utilisateur
-    function inscription() {
+    function ajouter() {
         require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'User' . DIRECTORY_SEPARATOR . 'inscription.php';
     }
 
@@ -35,13 +40,8 @@ class UserController {
         }
     }
 
-    // Fonction permettant de se connecter à l'application
-    function connexion() {
-        require_once __DIR__. DIRECTORY_SEPARATOR. '..'. DIRECTORY_SEPARATOR. 'Views'. DIRECTORY_SEPARATOR. 'User' . DIRECTORY_SEPARATOR. 'connexion.php';
-    }
-
     // Fonction permettant de vérifier la connexion d'un utilisateur
-    function verifieConnexion($pdo) {
+    function connexion($pdo) {
         // récupération des données de formulaire
         $identifiant = $_POST['identifiant'];
         $pwd = $_POST['pwd'];
@@ -68,7 +68,7 @@ class UserController {
         }
     }
 
-    function profil($pdo) {
+    function afficherProfil($pdo) {
         // récupération des données de l'utilisateur courant
         $id = $_SESSION['id'];
         

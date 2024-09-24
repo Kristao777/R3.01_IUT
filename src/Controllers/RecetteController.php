@@ -2,6 +2,20 @@
 
 class RecetteController {
 
+    // Fonction permettant de lister les recettes
+    function index($pdo) {
+        // préparation de la requête d'insertion dans la base de données
+
+        /** @var PDO $pdo **/
+        $requete = $pdo->prepare("SELECT * FROM recettes");
+        
+        // exécution de la requête et récupération des données
+        $requete->execute();
+        $recipes = $requete->fetchAll(PDO::FETCH_ASSOC);
+
+        require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Recette' . DIRECTORY_SEPARATOR .'liste.php');
+    }
+
     // Fonction permettant d'ajouter une nouvelle recette
     function ajouter() {
         require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'Recette' . DIRECTORY_SEPARATOR . 'ajout.php';
@@ -67,22 +81,8 @@ class RecetteController {
             // redirection vers la vue d'enregistrement effectué
             require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Recette' .DIRECTORY_SEPARATOR.'enregistrement.php');
         } else {
-            echo 'Erreur lors de l\'enregistrement de la recette.';
+            $_SESSION['message'] = ['danger' => 'Erreur d\'enregistrement de la recette'];
         }
-    }
-
-    // Fonction permettant de lister les recettes
-    function lister($pdo) {
-        // préparation de la requête d'insertion dans la base de données
-
-        /** @var PDO $pdo **/
-        $requete = $pdo->prepare("SELECT * FROM recettes");
-        
-        // exécution de la requête et récupération des données
-        $requete->execute();
-        $recipes = $requete->fetchAll(PDO::FETCH_ASSOC);
-
-        require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Recette' . DIRECTORY_SEPARATOR .'liste.php');
     }
 
     function detail($pdo, $id) {
@@ -103,7 +103,7 @@ class RecetteController {
 
         // Ajout des commentaires
         $commentaireController = new CommentController();
-        $commentaires = $commentaireController->lister($pdo, $id);
+        $commentaires = $commentaireController->listerParRecette($pdo, $id);
 
         require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Recette' . DIRECTORY_SEPARATOR .'detail.php');
     }
@@ -138,7 +138,7 @@ class RecetteController {
             // redirection vers la vue de suppression effectuée
             require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Recette' . DIRECTORY_SEPARATOR.'liste.php');
         } else {
-            $_SESSION['message'] = ['danger' => 'Erreur dans la suppression de la recette'];;
+            $_SESSION['message'] = ['danger' => 'Erreur dans la suppression de la recette'];
         }
     }
 
