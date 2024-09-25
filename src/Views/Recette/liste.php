@@ -1,6 +1,37 @@
 <h1>Recettes</h1>
 
 <div class="row">
+  <div class="col-6 mb-3">
+    <div class="card recipe-filter bg-primary-subtle active" data-filter="all">
+      <div class="card-body">
+        <p class="card-text text-center">Toutes les recettes</p>
+      </div>
+    </div>
+  </div>
+  <div class="col mb-3">
+    <div class="card recipe-filter" data-filter="entree">
+    <div class="card-body">
+        <p class="card-text text-center">Entrées</p>
+      </div>
+    </div>
+  </div>
+  <div class="col mb-3">
+    <div class="card recipe-filter" data-filter="plat">
+    <div class="card-body">
+        <p class="card-text text-center">Plats</p>
+      </div>
+    </div>
+  </div>
+  <div class="col mb-3">
+    <div class="card recipe-filter" data-filter="dessert">
+    <div class="card-body">
+        <p class="card-text text-center">Desserts</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" id="listeRecettes">
     <!-- Boucle permettant de lister les recettes -->
     <?php foreach ($recipes as $recipe) : ?>
         <div class="col-4 p-2">

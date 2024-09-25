@@ -12,6 +12,17 @@
         <label for="auteur" class="form-label">Mail de l'auteur</label>
         <input type="email" class="form-control" name="auteur" id="auteur" required>
     </div>
+
+    <div class="mb-3">
+        <label for="type" class="form-label">Type</label>
+        <select class="form-select" name="type" id="type">
+            <option value="" selected disabled hidden>Choisir</option>
+            <option value="entree">Entrée</option>
+            <option value="plat">Plat</option>
+            <option value="dessert">Dessert</option>
+        </select>
+    </div>
+
     <div class="mb-3">
         <label for="image" class="form-label">Image de la recette</label>
         <input type="file" class="form-control" name="image" id="image" required>

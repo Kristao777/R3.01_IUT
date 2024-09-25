@@ -4,10 +4,17 @@ class RecetteController {
 
     // Fonction permettant de lister les recettes
     function index($pdo) {
+
         // préparation de la requête d'insertion dans la base de données
 
         /** @var PDO $pdo **/
-        $requete = $pdo->prepare("SELECT * FROM recettes");
+        // verifier l'existence d'un filtre des recettes par type de plat
+        if (isset($_GET['filtre']) && $_GET['filtre']!= 'all') {
+            $requete = $pdo->prepare("SELECT * FROM recettes WHERE type_plat = :type");
+            $requete->bindParam(':type', $_GET['filtre']);
+        } else {
+            $requete = $pdo->prepare("SELECT * FROM recettes");
+        }
         
         // exécution de la requête et récupération des données
         $requete->execute();
@@ -41,6 +48,7 @@ class RecetteController {
         $titre = $_POST['titre'];
         $description = $_POST['description'];
         $auteur = $_POST['auteur'];
+        $typePlat = $_POST['type'];
 
         // l'ancienne image est conservée si aucune n'a été choisie
         // sinon, une nouvelle image est créée (erreur 4 = image non choisie)
@@ -63,15 +71,16 @@ class RecetteController {
         /** @var PDO $pdo **/
         if ($_GET['id']) {
             // modification d'une recette
-            $requete = $pdo->prepare("UPDATE recettes SET titre = :titre, description = :description, auteur = :auteur, image = :image WHERE id = :id");
+            $requete = $pdo->prepare("UPDATE recettes SET titre = :titre, description = :description, auteur = :auteur, type_plat = :type_plat , image = :image WHERE id = :id");
             $requete->bindParam(':id', $_GET['id']);
         } else {
             // création d'une nouvelle recette
-            $requete = $pdo->prepare("INSERT INTO recettes (titre, description, auteur, image, date_creation) VALUES (:titre, :description, :auteur, :image, NOW())");
+            $requete = $pdo->prepare("INSERT INTO recettes (titre, description, auteur, type_plat, image, date_creation) VALUES (:titre, :description, :auteur, :type_plat, :image, NOW())");
         }
         $requete->bindParam(':titre', $titre);
         $requete->bindParam(':description', $description);
         $requete->bindParam(':auteur', $auteur);
+        $requete->bindParam(':type_plat', $typePlat);
         $requete->bindParam(':image', $image);
 
         // exécution de la requête

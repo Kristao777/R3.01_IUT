@@ -19,7 +19,7 @@ class ContactController {
         $requete = $pdo->prepare('INSERT INTO contacts (nom, mail, description, date_creation) VALUES (:nom, :mail, :description, NOW())');
         $requete->bindParam(':nom', $nom);
         $requete->bindParam(':mail', $mail);
-        $requete->bindParam(':descriptio', $description);
+        $requete->bindParam(':description', $description);
 
         // exécution de la requête
         $ajoutOk = $requete->execute();

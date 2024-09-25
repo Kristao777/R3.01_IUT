@@ -14,6 +14,15 @@
     </div>
 
     <div class="mb-3">
+        <label for="type" class="form-label">Type</label>
+        <select class="form-select" name="type" id="type">
+            <option value="entree"<?php echo $recipe['type_plat'] =='entree'?'selected' : ''?>>Entrée</option>
+            <option value="plat"<?php echo $recipe['type_plat'] == 'plat'?'selected' : ''?>>Plat</option>
+            <option value="dessert"<?php echo $recipe['type_plat'] == 'dessert'?'selected' : ''?>>Dessert</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
         <label for="image" class="form-label">Image de la recette <br> (pour la modifier, merci de choisir la nouvelle image)</label>
         <img class="rounded w-25 mx-auto img-fluid" src="<?php echo $recipe['image'] != '' ? 'upload'.DIRECTORY_SEPARATOR.$recipe['image'] : 'upload'.DIRECTORY_SEPARATOR.'no_image.png' ;?>" alt="<?php echo $recipe['titre'];?>" class="card-img-top">
         <input type="file" class="form-control" name="image" id="image">
