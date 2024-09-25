@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  
     <!-- <script src="https://kit.fontawesome.com/75f10c1121.js" crossorigin="anonymous"></script> -->
     <script src="src/Views/js/recipes.js"></script>
+    <script src="src/Views/js/search.js"></script>
     <script src="src/Views/js/users.js"></script>
 </head>
 <body>
@@ -41,6 +42,14 @@
                     </ul>
                 </li>
             <?php } ?>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <form class="d-flex">
+                    <input class="form-control me-2" id="search" type="search" placeholder="Rechercher une recette" aria-label="Search">
+                </form>
+            </li>
+        </ul>
         </ul>
         <ul class="navbar-nav">
             <?php if(isset($_SESSION['identifiant'])) { ?>

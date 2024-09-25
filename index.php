@@ -55,6 +55,9 @@
                 case 'index':
                     $recetteController->index($pdo);
                     break;
+                case 'indexJson':
+                    $recetteController->indexJson($pdo);
+                    break;
                 case 'ajouter':
                     $recetteController->ajouter();
                     break;

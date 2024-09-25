@@ -23,6 +23,22 @@ class RecetteController {
         require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Recette' . DIRECTORY_SEPARATOR .'liste.php');
     }
 
+    // Fonction permettant de lister les recettes
+    function indexJson($pdo) {
+
+        // préparation de la requête d'insertion dans la base de données
+
+        /** @var PDO $pdo **/
+        $requete = $pdo->prepare("SELECT * FROM recettes");
+        
+        // exécution de la requête et récupération des données
+        $requete->execute();
+        $recipes = $requete->fetchAll(PDO::FETCH_ASSOC);
+        // Renvoyer les données au format JSON
+        header('Content-Type: application/json');
+        echo json_encode($recipes);
+    }
+
     // Fonction permettant d'ajouter une nouvelle recette
     function ajouter() {
         require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'Recette' . DIRECTORY_SEPARATOR . 'ajout.php';

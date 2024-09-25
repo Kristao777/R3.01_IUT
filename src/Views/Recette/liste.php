@@ -1,5 +1,4 @@
 <h1>Recettes</h1>
-
 <div class="row">
   <div class="col-6 mb-3">
     <div class="card recipe-filter bg-primary-subtle active" data-filter="all">
