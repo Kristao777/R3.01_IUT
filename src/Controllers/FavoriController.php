@@ -55,6 +55,7 @@ class FavoriController {
         $requete = $pdo->prepare("SELECT r.* FROM favoris f JOIN recettes r ON f.recette_id = r.id WHERE f.user_id = :user_id");
         $requete->bindParam(':user_id', $id_utilisateur);
         $requete->execute();
+        header('Content-Type: application/json');
         echo json_encode($requete->fetchAll(PDO::FETCH_ASSOC));
     }
 

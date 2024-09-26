@@ -45,11 +45,8 @@
         </ul>
         <ul class="navbar-nav">
             <li class="nav-item">
-                <form class="d-flex">
-                    <input class="form-control me-2" id="search" type="search" placeholder="Rechercher une recette" aria-label="Search">
-                </form>
+                <input class="form-control me-2" id="search" type="search" placeholder="Rechercher une recette" aria-label="Search">
             </li>
-        </ul>
         </ul>
         <ul class="navbar-nav">
             <?php if(isset($_SESSION['identifiant'])) { ?>

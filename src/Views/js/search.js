@@ -2,14 +2,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     let recipes = [];
     
-    // Fonction pour charger tous les produits du serveur via fetch()
+    // Fonction pour charger toutes les recettes du serveur via fetch()
     async function loadRecipes() {
         try {
             // Récupère les données des recettes à partir d'un fichier JSON envoyé par le controleur
             const response = await fetch('?c=Recette&a=indexJson&x');
             // Traite le retour de la requête en JSON
             recipes = await response.json();
-            // displayRecipes(recipes); // Afficher les produits au départ
          } catch (error) {
              console.error('Erreur lors du chargement des recettes :', error);
          }
@@ -26,11 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return recipe.titre.toLowerCase().includes(query) || recipe.description.toLowerCase().includes(query);
         });
         
-        // Afficher les produits filtrés
+        // Afficher les recettes filtrées
         displayRecipes(filtered);
     }
 
-    // Fonction pour afficher les produits dans la page
+    // Fonction pour afficher les recettes dans la page
     function displayRecipes(recipesToDisplay) {
         const resultsDiv = document.getElementById('results');
         resultsDiv.innerHTML = ''; // Vider les résultats précédents
@@ -40,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
   
-        // Parcourir les produits et les afficher
+        // Parcourir les recettes et les afficher
         recipesToDisplay.forEach(recipe => {
           const recipeDiv = document.createElement('div');
           recipeDiv.classList.add('product');
@@ -52,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Charger les produits au chargement du DOM
+    // Charger les recettes au chargement du DOM
     loadRecipes();
 
     // Ecouter le focus sur le champ de recherche
