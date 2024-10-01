@@ -69,7 +69,7 @@ class RecetteController {
 
         // création ou modification d'une recette
         /** @var PDO $pdo **/
-        if ($_GET['id']) {
+        if (isset($_GET['id'])) {
             // modification d'une recette
             $requete = $pdo->prepare("UPDATE recettes SET titre = :titre, description = :description, auteur = :auteur, type_plat = :type_plat , image = :image WHERE id = :id");
             $requete->bindParam(':id', $_GET['id']);
