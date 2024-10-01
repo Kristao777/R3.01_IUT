@@ -10,7 +10,7 @@
     </div>
     <div class="mb-3">
         <label for="auteur" class="form-label">Mail de l'auteur</label>
-        <input type="email" class="form-control" name="auteur" id="auteur" required>
+        <input type="email" class="form-control" name="auteur" id="auteur" value="<?php echo $auteur; ?>" required>
     </div>
 
     <div class="mb-3">
