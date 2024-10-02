@@ -208,7 +208,7 @@ class RecetteController {
     function nbAValider($pdo) {
         if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']) {
             // préparation de la requête de sélection dans la base de données
-            $requete = $pdo->prepare("SELECT COUNT(*) as nbRecettesNonValides FROM recettes WHERE isApproved = 0");
+            $requete = $pdo->prepare("SELECT COUNT(*) as nbRecettesNonValides FROM recettes WHERE isApproved = 0 OR isApproved IS NULL");
                     
             // exécution de la requête et récupération des données
             $requete->execute();

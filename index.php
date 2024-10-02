@@ -124,6 +124,15 @@
                 case 'supprimer':
                     $commentController->supprimer($pdo, $_GET['id']);
                     break;
+                case 'aApprouver':
+                    $commentController->aApprouver($pdo);
+                    break;
+                case 'valider':
+                    $commentController->valider($pdo, $_GET['id']);
+                    break;
+                case 'nbAValider':
+                    $commentController->nbAValider($pdo);
+                    break;
                 default:
                     $_SESSION['message'] = ['danger' => 'La page n\'existe pas'];
                     header('Location: ?c=home');

@@ -37,7 +37,8 @@
                         <?php if($_SESSION['isAdmin']) {?>
                             <li><a class="nav-link" href='?c=Recette&a=ajouter'>Ajouter une recette</a></li>
                             <li>
-                                <a id="a-valider" class="nav-link" href='?c=Recette&a=aApprouver'>Recettes à approuver</a>
+                                <a id="recette-a-valider" class="nav-link" href='?c=Recette&a=aApprouver'>Recettes à approuver</a>
+                                <a id="comment-a-valider" class="nav-link" href='?c=Comment&a=aApprouver'>Commentaires à approuver</a>
                             </li>
                         <?php } else {?>
                             <li><a class="nav-link" href='?c=Recette&a=ajouter'>Proposer une recette</a></li>

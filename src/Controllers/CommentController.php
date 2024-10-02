@@ -50,4 +50,52 @@ class CommentController {
         header('Location: ?c=Comment&a=index');
     }
 
+    // Fonction permettant de lister les commentaires a approuver
+    function aApprouver($pdo) {
+        // préparation de la requête de sélection dans la base de données
+        $requete = $pdo->prepare("SELECT * FROM comments WHERE isApproved = 0");
+        
+        // exécution de la requête et récupération des données
+        $requete->execute();
+        $comments = $requete->fetchAll(PDO::FETCH_ASSOC);
+        
+        require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Comment' . DIRECTORY_SEPARATOR.'aApprouver.php');
+    }
+
+    // Fonction permettant de valider un commentaire
+    function valider($pdo, $id) {
+        // préparation de la requête de mise à jour dans la base de données
+        $requete = $pdo->prepare("UPDATE comments SET isApproved = 1 WHERE id = :id");
+        $requete->bindParam(':id', $id);
+        
+        // exécution de la requête
+        $validationOk = $requete->execute();
+        
+        if($validationOk) {
+            $_SESSION['message'] = ['success' => 'Commentaire validé avec succès'];
+            
+            // redirection vers la vue de validation effectuée
+            header('Location:?c=Comment&a=aApprouver');
+        } else {
+            $_SESSION['message'] = ['danger' => 'Erreur dans la validation du commentaire'];
+        }
+    }
+
+    // Fonction permettant de compter le nombre de commentaires non validés
+    function nbAValider($pdo) {
+        if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']) {
+            // préparation de la requête de sélection dans la base de données
+            $requete = $pdo->prepare("SELECT COUNT(*) as nbCommentairesNonValides FROM comments WHERE isApproved = 0 OR isApproved IS NULL");
+                    
+            // exécution de la requête et récupération des données
+            $requete->execute();
+            $resultat = $requete->fetch(PDO::FETCH_ASSOC);
+
+            echo $resultat['nbCommentairesNonValides'];
+        } else {
+            echo 0;
+        }
+        
+    }
+
 }

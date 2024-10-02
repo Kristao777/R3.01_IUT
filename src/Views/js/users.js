@@ -53,7 +53,22 @@ document.addEventListener('DOMContentLoaded', () => {
             let badge = '<span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">';
             menuAdmin.innerHTML += badge;
             let badgeDetail = '<span class="badge sticky-top start-100 text-bg-danger">'+response+'</span>';
-            let menuAValider = document.getElementById("a-valider");
+            let menuAValider = document.getElementById("recette-a-valider");
+            menuAValider.innerHTML += badgeDetail;
+        }
+        
+    })
+
+    // Gestion des notifications en cas de commentaires à valider
+    fetch("?c=Comment&a=nbAValider&x")
+    .then(response => response.text())
+    .then(response => {
+        if(parseInt(response) > 0) {
+            let menuAdmin = document.getElementById("menu-admin");
+            let badge = '<span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">';
+            menuAdmin.innerHTML += badge;
+            let badgeDetail = '<span class="badge sticky-top start-100 text-bg-danger">'+response+'</span>';
+            let menuAValider = document.getElementById("comment-a-valider");
             menuAValider.innerHTML += badgeDetail;
         }
         
