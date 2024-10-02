@@ -1,6 +1,6 @@
 <?php
 
-class RecetteController {
+class RecetteController { 
 
     // Fonction permettant de lister les recettes
     function index($pdo) {
@@ -10,10 +10,12 @@ class RecetteController {
         /** @var PDO $pdo **/
         // verifier l'existence d'un filtre des recettes par type de plat
         if (isset($_GET['filtre']) && $_GET['filtre']!= 'all') {
-            $requete = $pdo->prepare("SELECT * FROM recettes WHERE type_plat = :type");
+            $isAdmin = isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] ? '' : ' AND isApproved = 1';
+            $requete = $pdo->prepare("SELECT * FROM recettes WHERE type_plat = :type".$isAdmin);
             $requete->bindParam(':type', $_GET['filtre']);
         } else {
-            $requete = $pdo->prepare("SELECT * FROM recettes");
+            $isAdmin = isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] ? '' : ' WHERE isApproved = 1';
+            $requete = $pdo->prepare("SELECT * FROM recettes".$isAdmin);
         }
         
         // exécution de la requête et récupération des données
@@ -29,7 +31,8 @@ class RecetteController {
         // préparation de la requête d'insertion dans la base de données
 
         /** @var PDO $pdo **/
-        $requete = $pdo->prepare("SELECT * FROM recettes");
+        $isAdmin = isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] ? '' : ' WHERE isApproved = 1';
+        $requete = $pdo->prepare("SELECT * FROM recettes".$isAdmin);
         
         // exécution de la requête et récupération des données
         $requete->execute();
@@ -170,4 +173,64 @@ class RecetteController {
         }
     }
 
+    // Fonction permettant de lister les recettes a approuver
+    function aApprouver($pdo) {
+        // préparation de la requête de sélection dans la base de données
+        $requete = $pdo->prepare("SELECT * FROM recettes WHERE isApproved = 0");
+        
+        // exécution de la requête et récupération des données
+        $requete->execute();
+        $recipes = $requete->fetchAll(PDO::FETCH_ASSOC);
+        
+        require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Recette' . DIRECTORY_SEPARATOR.'aApprouver.php');
+    }
+
+    // Fonction permettant de valider une recette
+    function valider($pdo, $id) {
+        // préparation de la requête de mise à jour dans la base de données
+        $requete = $pdo->prepare("UPDATE recettes SET isApproved = 1 WHERE id = :id");
+        $requete->bindParam(':id', $id);
+        
+        // exécution de la requête
+        $validationOk = $requete->execute();
+        
+        if($validationOk) {
+            $_SESSION['message'] = ['success' => 'Recette validée avec succès'];
+            
+            // redirection vers la vue de validation effectuée
+            header('Location:?c=Recette&a=aApprouver');
+        } else {
+            $_SESSION['message'] = ['danger' => 'Erreur dans la validation de la recette'];
+        }
+    }
+
+    // Fonction permettant de compter le nombre de recettes non validées
+    function nbAValider($pdo) {
+        if(isset($_SESSION['isAdmin']) && $_SESSION['isAdmin']) {
+            // préparation de la requête de sélection dans la base de données
+            $requete = $pdo->prepare("SELECT COUNT(*) as nbRecettesNonValides FROM recettes WHERE isApproved = 0");
+                    
+            // exécution de la requête et récupération des données
+            $requete->execute();
+            $resultat = $requete->fetch(PDO::FETCH_ASSOC);
+
+            echo $resultat['nbRecettesNonValides'];
+        } else {
+            echo 0;
+        }
+        
+    }
+
+    // Fonction permettant de lister les recettes non valides concernant un utilisateur
+    function nonValidesPourUtilisateur($pdo, $idUtilisateur) {
+        // préparation de la requête de sélection dans la base de données
+        $requete = $pdo->prepare("SELECT r.* FROM recettes r JOIN users u ON r.auteur = u.mail WHERE u.id = :idUtilisateur AND r.isApproved = 0");
+        $requete->bindParam(':idUtilisateur', $idUtilisateur);
+        
+        // exécution de la requête et récupération des données
+        $requete->execute();
+        $recipes = $requete->fetchAll(PDO::FETCH_ASSOC);
+        
+        require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Recette' . DIRECTORY_SEPARATOR.'enCoursValidation.php');
+    }
 }

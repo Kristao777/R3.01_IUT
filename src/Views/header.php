@@ -27,17 +27,21 @@
                 <a class="nav-link" href='?c=Contact&a=ajouter'>Contact</a>
             </li>
             <?php if(isset($_SESSION['identifiant'])) {?>
-                <div class="vr"></div>                        
+                <div class="vr"></div>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a id="menu-admin" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Bienvenue <?php echo $_SESSION['identifiant'];?>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="nav-link" href='?c=User&a=afficherProfil'>Mon profil</a></li>
                         <?php if($_SESSION['isAdmin']) {?>
                             <li><a class="nav-link" href='?c=Recette&a=ajouter'>Ajouter une recette</a></li>
+                            <li>
+                                <a id="a-valider" class="nav-link" href='?c=Recette&a=aApprouver'>Recettes à approuver</a>
+                            </li>
                         <?php } else {?>
                             <li><a class="nav-link" href='?c=Recette&a=ajouter'>Proposer une recette</a></li>
+                            <li><a class="nav-link" href='?c=Recette&a=enCours&id=<?php echo $_SESSION['id']; ?>'>Mes recettes en cours de validation</a></li>
                         <?php } ?>
                             <li><a class="nav-link" href='?c=Favori&a=index'>Mes recettes favorites</a></li>
                         <?php if($_SESSION['isAdmin']) {?>

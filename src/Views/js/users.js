@@ -1,7 +1,6 @@
 // Écoute le chargement du DOM
 document.addEventListener('DOMContentLoaded', () => {
 
-
     /* Ajout partie de l'affichage du profil utilisateur */
 
     // Sélection du profil identifiant (contenu modifiable)
@@ -44,5 +43,20 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.log("Erreur : " + error));
     }
+
+    // Gestion des notifications en cas de recettes à valider
+    fetch("?c=Recette&a=nbAValider&x")
+    .then(response => response.text())
+    .then(response => {
+        if(parseInt(response) > 0) {
+            let menuAdmin = document.getElementById("menu-admin");
+            let badge = '<span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">';
+            menuAdmin.innerHTML += badge;
+            let badgeDetail = '<span class="badge sticky-top start-100 text-bg-danger">'+response+'</span>';
+            let menuAValider = document.getElementById("a-valider");
+            menuAValider.innerHTML += badgeDetail;
+        }
+        
+    })
     
 });

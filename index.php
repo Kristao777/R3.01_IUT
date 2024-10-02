@@ -73,6 +73,18 @@
                 case 'supprimer':
                     $recetteController->supprimer($pdo, $_GET['id']);
                     break;
+                case 'aApprouver':
+                    $recetteController->aApprouver($pdo);
+                    break;
+                case 'valider':
+                    $recetteController->valider($pdo, $_GET['id']);
+                    break;
+                case 'nbAValider':
+                    $recetteController->nbAValider($pdo);
+                    break;
+                case 'enCours':
+                    $recetteController->nonValidesPourUtilisateur($pdo,$_GET['id']);
+                    break;
                 default:
                     $_SESSION['message'] = ['danger' => 'La page n\'existe pas'];
                     header('Location: ?c=home');
