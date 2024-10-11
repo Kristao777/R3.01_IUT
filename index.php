@@ -17,9 +17,6 @@
     // import de la classe CommentController
     require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'CommentController.php');
     
-    // connexion à la base de données
-    require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Models'.DIRECTORY_SEPARATOR.'connectDb.php');
-    
     // ajout de l'en tête
     if(!isset($_GET["x"])) require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR.'header.php');
 
@@ -53,25 +50,25 @@
             $recetteController = new RecetteController();
             switch ($action) {
                 case 'index':
-                    $recetteController->index($pdo);
+                    $recetteController->index();
                     break;
                 case 'indexJson':
-                    $recetteController->indexJson($pdo);
+                    $recetteController->indexJson();
                     break;
                 case 'ajouter':
                     $recetteController->ajouter();
                     break;
                 case 'enregistrer':
-                    $recetteController->enregistrer($pdo);
+                    $recetteController->enregistrer();
                     break;
                 case 'modifier':
-                    $recetteController->modifier($pdo, $_GET['id']);
+                    $recetteController->modifier($_GET['id']);
                     break;
                 case 'detail':
-                    $recetteController->detail($pdo, $_GET['id']);
+                    $recetteController->detail($_GET['id']);
                     break;
                 case 'supprimer':
-                    $recetteController->supprimer($pdo, $_GET['id']);
+                    $recetteController->supprimer($_GET['id']);
                     break;
                 default:
                     $_SESSION['message'] = ['danger' => 'La page n\'existe pas'];

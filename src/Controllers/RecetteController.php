@@ -1,39 +1,34 @@
 <?php
 
+    
+// connexion à la base de données
+require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Models'.DIRECTORY_SEPARATOR.'Recette.php');
+
 class RecetteController {
 
     // Fonction permettant de lister les recettes
-    function index($pdo) {
+    function index() {
 
         // préparation de la requête d'insertion dans la base de données
 
-        /** @var PDO $pdo **/
         // verifier l'existence d'un filtre des recettes par type de plat
         if (isset($_GET['filtre']) && $_GET['filtre']!= 'all') {
-            $requete = $pdo->prepare("SELECT * FROM recettes WHERE type_plat = :type");
-            $requete->bindParam(':type', $_GET['filtre']);
+            $recetteModel = new Recette();
+            $recipes = $recetteModel->findBy(array('type_plat' => $_GET['filtre']));
         } else {
-            $requete = $pdo->prepare("SELECT * FROM recettes");
+            $recetteModel = new Recette();
+            $recipes = $recetteModel->findAll();
         }
-        
-        // exécution de la requête et récupération des données
-        $requete->execute();
-        $recipes = $requete->fetchAll(PDO::FETCH_ASSOC);
 
         require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Recette' . DIRECTORY_SEPARATOR .'liste.php');
     }
 
     // Fonction permettant de lister les recettes
-    function indexJson($pdo) {
-
-        // préparation de la requête d'insertion dans la base de données
-
-        /** @var PDO $pdo **/
-        $requete = $pdo->prepare("SELECT * FROM recettes");
+    function indexJson() {
         
         // exécution de la requête et récupération des données
-        $requete->execute();
-        $recipes = $requete->fetchAll(PDO::FETCH_ASSOC);
+        $recetteModel = new Recette();
+        $recipes = $recetteModel->findAll();
         // Renvoyer les données au format JSON
         header('Content-Type: application/json');
         echo json_encode($recipes);
