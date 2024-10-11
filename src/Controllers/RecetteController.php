@@ -39,21 +39,16 @@ class RecetteController {
         require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'Recette' . DIRECTORY_SEPARATOR . 'ajout.php';
     }
 
-    function modifier($pdo) {
+    function modifier() {
 
-        /** @var PDO $pdo **/
-        $requete = $pdo->prepare("SELECT * FROM recettes WHERE id = :id");
-        $requete->bindParam(':id', $_GET['id']);
-        
-        // exécution de la requête et récupération des données
-        $requete->execute();
-        $recipe = $requete->fetch(PDO::FETCH_ASSOC);
+        $recetteModel = new Recette();
+        $recipe = $recetteModel->find($_GET['id']);
 
         require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'Recette' . DIRECTORY_SEPARATOR . 'modif.php';
     }
 
     // Fonction permettant d'enregistrer une nouvelle recette
-    function enregistrer($pdo) {
+    function enregistrer() {
 
         // récupération des données de formulaire
         $titre = $_POST['titre'];

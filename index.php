@@ -38,7 +38,7 @@
                     $contactController->ajouter();
                     break;
                 case 'enregistrer':
-                    $contactController->enregister($pdo);
+                    $contactController->enregister();
                     break;
                 default:
                     $_SESSION['message'] = ['danger' => 'La page n\'existe pas'];
@@ -83,10 +83,10 @@
                     $favoriController->index();
                     break;
                 case 'ajouter':
-                    $favoriController->ajouter($pdo, $_GET['id']);
+                    $favoriController->ajouter($_GET['id']);
                     break;
                 case 'listerParUtilisateur':
-                    $favoriController->listerParUtilisateur($pdo, $_SESSION['id']);
+                    $favoriController->listerParUtilisateur($_SESSION['id']);
                     break;
                 default:
                     $_SESSION['message'] = ['danger' => 'La page n\'existe pas'];
@@ -98,16 +98,16 @@
             $commentController = new CommentController();
             switch ($action) {
                 case 'index':
-                    $commentController->index($pdo);
+                    $commentController->index();
                     break;
                 case 'enregistrer':
-                    $commentController->enregistrer($pdo, $_GET['id']);
+                    $commentController->enregistrer($_GET['id']);
                     break;
                 case 'listerParRecette':
-                    $commentController->listerParRecette($pdo, $_GET['id']);
+                    $commentController->listerParRecette($_GET['id']);
                     break;
                 case 'supprimer':
-                    $commentController->supprimer($pdo, $_GET['id']);
+                    $commentController->supprimer($_GET['id']);
                     break;
                 default:
                     $_SESSION['message'] = ['danger' => 'La page n\'existe pas'];
@@ -125,13 +125,13 @@
                     $userController->ajouter();
                     break;
                 case 'enregistrer':
-                    $userController->enregistrer($pdo);
+                    $userController->enregistrer();
                     break;
                 case 'connexion':
-                    $userController->connexion($pdo);
+                    $userController->connexion();
                     break;
                 case 'afficherProfil':
-                    $userController->afficherProfil($pdo);
+                    $userController->afficherProfil();
                     break;
                 case 'deconnexion':
                     $userController->deconnexion();
