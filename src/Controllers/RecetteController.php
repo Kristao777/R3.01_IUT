@@ -6,6 +6,13 @@ require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Models'.DIREC
 
 class RecetteController {
 
+    private $recetteModel;
+
+    public function __construct() {
+        $recetteModel = new Recette();
+        $this->recetteModel = $recetteModel;
+    }
+
     // Fonction permettant de lister les recettes
     function index() {
 
@@ -13,11 +20,9 @@ class RecetteController {
 
         // verifier l'existence d'un filtre des recettes par type de plat
         if (isset($_GET['filtre']) && $_GET['filtre']!= 'all') {
-            $recetteModel = new Recette();
-            $recipes = $recetteModel->findBy(array('type_plat' => $_GET['filtre']));
+            $recipes = $this->recetteModel->findBy(array('type_plat' => $_GET['filtre']));
         } else {
-            $recetteModel = new Recette();
-            $recipes = $recetteModel->findAll();
+            $recipes = $this->recetteModel->findAll();
         }
 
         require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Recette' . DIRECTORY_SEPARATOR .'liste.php');
@@ -27,8 +32,7 @@ class RecetteController {
     function indexJson() {
         
         // exécution de la requête et récupération des données
-        $recetteModel = new Recette();
-        $recipes = $recetteModel->findAll();
+        $recipes = $this->recetteModel->findAll();
         // Renvoyer les données au format JSON
         header('Content-Type: application/json');
         echo json_encode($recipes);
@@ -41,8 +45,7 @@ class RecetteController {
 
     function modifier() {
 
-        $recetteModel = new Recette();
-        $recipe = $recetteModel->find($_GET['id']);
+        $recipe = $this->recetteModel->find($_GET['id']);
 
         require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'Recette' . DIRECTORY_SEPARATOR . 'modif.php';
     }
@@ -59,10 +62,7 @@ class RecetteController {
         // l'ancienne image est conservée si aucune n'a été choisie
         // sinon, une nouvelle image est créée (erreur 4 = image non choisie)
         if($_FILES['image']['error'] == 4) {
-            $requete = $pdo->prepare("SELECT * FROM recettes WHERE id = :id");
-            $requete->bindParam(':id', $_GET['id']);
-            $requete->execute();
-            $recipe = $requete->fetch(PDO::FETCH_ASSOC);
+            $recipe = $this->recetteModel->find($_GET['id']);
             $image = $recipe['image'];
         } else {
             $image = $_FILES['image']['name'];
@@ -77,20 +77,11 @@ class RecetteController {
         /** @var PDO $pdo **/
         if (isset($_GET['id'])) {
             // modification d'une recette
-            $requete = $pdo->prepare("UPDATE recettes SET titre = :titre, description = :description, auteur = :auteur, type_plat = :type_plat , image = :image WHERE id = :id");
-            $requete->bindParam(':id', $_GET['id']);
+            $ajoutOk = $this->recetteModel->update($_GET['id'],$titre,$description,$auteur,$typePlat,$image);
         } else {
             // création d'une nouvelle recette
-            $requete = $pdo->prepare("INSERT INTO recettes (titre, description, auteur, type_plat, image, date_creation) VALUES (:titre, :description, :auteur, :type_plat, :image, NOW())");
+            $ajoutOk = $this->recetteModel->add($titre,$description,$auteur,$typePlat,$image);
         }
-        $requete->bindParam(':titre', $titre);
-        $requete->bindParam(':description', $description);
-        $requete->bindParam(':auteur', $auteur);
-        $requete->bindParam(':type_plat', $typePlat);
-        $requete->bindParam(':image', $image);
-
-        // exécution de la requête
-        $ajoutOk = $requete->execute();
         
         if($ajoutOk) {
             // redirection vers la vue d'enregistrement effectué
@@ -100,52 +91,36 @@ class RecetteController {
         }
     }
 
-    function detail($pdo, $id) {
+    function detail($id) {
 
         // Ajout du contrôleur des favoris
         $favoriController = new FavoriController();
-        $existe = $favoriController->existe($pdo, $id, isset($_SESSION['id']) ? $_SESSION['id']:null);
+        $existe = $favoriController->existe((int)$id, isset($_SESSION['id']) ? $_SESSION['id']:null);
         
         // préparation de la requête de sélection dans la base de données
 
-        /** @var PDO $pdo **/
-        $requete = $pdo->prepare("SELECT * FROM recettes WHERE id = :id");
-        $requete->bindParam(':id', $id);
-        
-        // exécution de la requête et récupération des données
-        $requete->execute();
-        $recipe = $requete->fetch(PDO::FETCH_ASSOC);
+        $recipe = $this->recetteModel->find($id);
 
         // Ajout des commentaires
         $commentaireController = new CommentController();
-        $commentaires = $commentaireController->listerParRecette($pdo, $id);
+        $commentaires = $commentaireController->listerParRecette($id);
 
         require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Views'.DIRECTORY_SEPARATOR. 'Recette' . DIRECTORY_SEPARATOR .'detail.php');
     }
 
     // Fonction permettant de supprimer une recette
-    function supprimer($pdo, $id) {
+    function supprimer($id) {
 
         // Suppression des favoris liés à la recette
-        $requete = $pdo->prepare("DELETE FROM favoris WHERE recette_id = :id");
-        $requete->bindParam(':id', $id);
-        
-        // exécution de la requête
-        $suppressionOk = $requete->execute();
+        $favoriModel = new Favori();
+        $favoriModel->deleteByRecette($id);
 
         // Suppression des commentaires liés à la recette
-        $requete = $pdo->prepare("DELETE FROM comments WHERE recette_id = :id");
-        $requete->bindParam(':id', $id);
-        
-        // exécution de la requête
-        $suppressionOk = $requete->execute();
+        $commentModel = new Comment();
+        $commentModel->deleteByRecette($id);
 
         // préparation de la requête de suppression dans la base de données
-        $requete = $pdo->prepare("DELETE FROM recettes WHERE id = :id");
-        $requete->bindParam(':id', $id);
-        
-        // exécution de la requête
-        $suppressionOk = $requete->execute();
+        $suppressionOk = $this->recetteModel->delete($id);
         
         if($suppressionOk) {
             $_SESSION['message'] = ['success' => 'Recette supprimée avec succès'];

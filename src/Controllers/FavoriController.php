@@ -1,35 +1,38 @@
 <?php
 
+// connexion à la base de données
+require_once(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Models'.DIRECTORY_SEPARATOR.'Favori.php');
+
 class FavoriController {
     
+    private $favoriModel;
+
+    public function __construct() {
+
+        // création d'un objet CommentModel
+        $this->favoriModel = new Favori();
+
+    }
+
     function index() {
         require_once __DIR__. DIRECTORY_SEPARATOR. '..'. DIRECTORY_SEPARATOR. 'Views'. DIRECTORY_SEPARATOR. 'User'. DIRECTORY_SEPARATOR.'favoris.php';
     }
 
-    function ajouter($pdo, $id_recette) {
+    function ajouter($id_recette) {
         // récupération de l'id de l'utilisateur connecté
         $id_utilisateur = $_SESSION['id'];
         
         // vérification si l'utilisateur a déjà ajouté cette recette à ses favoris
-        $requete = $pdo->prepare("SELECT * FROM favoris WHERE user_id = :user_id AND recette_id = :recette_id");
-        $requete->bindParam(':user_id', $id_utilisateur);
-        $requete->bindParam(':recette_id', $id_recette);
-        $requete->execute();
+        $existe = $this->favoriModel->findBy(array('user_id' => $id_utilisateur, 'recette_id'=> $id_recette));
         
-        if (!$requete->fetch()) {
+        if (!$existe[0]) {
             // l'utilisateur n'a pas déjà ajouté cette recette à ses favoris, on l'ajoute
-            $requete = $pdo->prepare("INSERT INTO favoris (user_id, recette_id, create_time) VALUES (:user_id, :recette_id, NOW())");
-            $requete->bindParam(':user_id', $id_utilisateur);
-            $requete->bindParam(':recette_id', $id_recette);
-            $requete->execute();
+            $this->favoriModel->add($id_recette,$id_utilisateur);
             $_SESSION['message'] = ['success' => 'Recette ajoutée aux favoris'];
 
         } else {
             // l'utilisateur a déjà ajouté cette recette à ses favoris, on le supprime des favoris
-            $requete = $pdo->prepare("DELETE FROM favoris WHERE user_id = :user_id AND recette_id = :recette_id");
-            $requete->bindParam(':user_id', $id_utilisateur);
-            $requete->bindParam(':recette_id', $id_recette);
-            $requete->execute();
+            $this->favoriModel->delete($existe[0]['id']);
             $_SESSION['message'] = ['success' => 'Recette supprimée des favoris'];
         }
 
@@ -39,24 +42,21 @@ class FavoriController {
     }
 
     // Fonction permettant de vérifier si une recette est déjà dans les favoris d'un utilisateur
-    function existe($pdo,$id_recette, $id_utilisateur)
+    function existe($id_recette, $id_utilisateur)
     { 
         // récupération de l'id de l'utilisateur connecté
-        $requete = $pdo->prepare("SELECT * FROM favoris WHERE user_id = :user_id AND recette_id = :recette_id");
-        $requete->bindParam(':user_id', $id_utilisateur);
-        $requete->bindParam(':recette_id', $id_recette);
-        $requete->execute();
+        $res = $this->favoriModel->findBy(array('user_id' => $id_utilisateur, 'recette_id'=> $id_recette));
 
-        return $requete->fetch();
+        var_dump($res);
+
+        return $res;
     }
 
     // Fonction permettant de récupérer les recettes favorites d'un utilisateur
-    function listerParUtilisateur($pdo, $id_utilisateur) {
-        $requete = $pdo->prepare("SELECT r.* FROM favoris f JOIN recettes r ON f.recette_id = r.id WHERE f.user_id = :user_id");
-        $requete->bindParam(':user_id', $id_utilisateur);
-        $requete->execute();
+    function listerParUtilisateur($id_utilisateur) {
+        $res = $this->favoriModel->findByUser($id_utilisateur);
         header('Content-Type: application/json');
-        echo json_encode($requete->fetchAll(PDO::FETCH_ASSOC));
+        echo json_encode($res);
     }
 
 }

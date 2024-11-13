@@ -28,7 +28,7 @@
     switch ($controller) {
         // route pour la page d'accueil
         case 'home':
-            require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'homeController.php');
+            require_once(__DIR__.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Controllers'.DIRECTORY_SEPARATOR.'HomeController.php');
             break;
         // routes pour la gestion des contacts    
         case 'Contact':
@@ -38,7 +38,7 @@
                     $contactController->ajouter();
                     break;
                 case 'enregistrer':
-                    $contactController->enregister();
+                    $contactController->enregistrer();
                     break;
                 default:
                     $_SESSION['message'] = ['danger' => 'La page n\'existe pas'];
@@ -100,7 +100,7 @@
                 case 'index':
                     $commentController->index();
                     break;
-                case 'enregistrer':
+                case 'ajouter':
                     $commentController->enregistrer($_GET['id']);
                     break;
                 case 'listerParRecette':
