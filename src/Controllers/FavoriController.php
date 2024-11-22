@@ -47,8 +47,6 @@ class FavoriController {
         // récupération de l'id de l'utilisateur connecté
         $res = $this->favoriModel->findBy(array('user_id' => $id_utilisateur, 'recette_id'=> $id_recette));
 
-        var_dump($res);
-
         return $res;
     }
 

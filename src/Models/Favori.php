@@ -33,12 +33,10 @@ Class Favori {
         $stmt = $this->conn->prepare($query);
 
         foreach ($params as $key => $value) {
-            var_dump($key." => ". $value);
-            $stmt->bindParam(":$key", $value);
+            $stmt->bindValue(":$key", $value);
         }
-        
+
         $stmt->execute();
-        var_dump($stmt->debugDumpParams());
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
